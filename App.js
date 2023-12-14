@@ -10,6 +10,8 @@ export default function App() {
   );
 }
 
+//make an example for camera , tomorrow location , today  finish camera and push it 
+//dont work with web for now  it will be  done on next week 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

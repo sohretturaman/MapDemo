@@ -25,6 +25,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow map demo app to use your camera to save your favourite places!",
+          "photosPermission": "The map demo app wants to accesses your photos !"
+        }
+      ]
+    ]
   }
 }

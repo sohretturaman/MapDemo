@@ -2,11 +2,17 @@
 
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { FlatList } from "react-native";
+import PlaceItem from "./PlaceItem";
 
-const PlacesList = () => {
+const PlacesList = ({ placeData }) => {
   return (
     <View>
-      <Text>PlacesList</Text>
+      <FlatList
+        data={placeData}
+        renderItem={({ item }) => <PlaceItem data={item} />}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };

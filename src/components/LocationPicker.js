@@ -10,9 +10,10 @@ import {
   PermissionStatus,
   getCurrentPositionAsync,
 } from "expo-location";
+import { LocationFetcher } from "../util/Location";
 
 export default function LocationPicker() {
-  const [location, setLocation] = useState({ longt: 0, lat: 0 });
+  const [location, setLocation] = useState({ lng: 0, lat: 0 });
 
   async function handleOnCurrentLocation() {
     const permissionInfo = await requestForegroundPermissionsAsync();
@@ -23,23 +24,23 @@ export default function LocationPicker() {
     const currentLocation = await getCurrentPositionAsync({});
     console.log("current location ", currentLocation);
     setLocation({
-      longt: currentLocation.coords.longitude,
+      lng: currentLocation.coords.longitude,
       lat: currentLocation.coords.latitude,
     });
   }
+
+  const locationPreviewUrl = LocationFetcher(location.lat, location.lng);
+  console.log("location preview url", locationPreviewUrl);
 
   return (
     <View style={styles.wrapper}>
       <Text style={styles.text}>Location</Text>
       {/** conditional empty view*/}
-      <Image
-        style={styles.image}
-        source={{ uri: "https://picsum.photos/200/300" }}
-      />
+      <Image style={styles.image} source={{ uri: locationPreviewUrl }} />
       {/** two button for current location and view all map */}
 
       <Text style={{ alignSelf: "center", fontSize: 12 }}>
-        Coords:{location.lat},{location.longt}
+        Coords:{location.lat},{location.lng}
       </Text>
       <View style={styles.buttonWrapper}>
         <ButtonComp

@@ -5,18 +5,18 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../consts/Colors";
 
-const Button = ({ onPress, buttonTitle }) => {
+const ButtonComp = ({ onPress, buttonTitle, iconName }) => {
   return (
     <Pressable onPress={onPress} style={styles.buttonWrapper}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.text}>{buttonTitle}</Text>
-        <Ionicons name="camera" size={20} color={Colors.primaryDark} />
+        <Ionicons name={iconName} size={20} color={Colors.primaryDark} />
       </View>
     </Pressable>
   );
 };
 
-export default Button;
+export default ButtonComp;
 
 const styles = StyleSheet.create({
   buttonWrapper: {

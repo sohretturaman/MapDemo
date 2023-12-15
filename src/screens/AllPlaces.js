@@ -3,6 +3,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import PlacesList from "../components/PlacesList";
+import LocationPicker from "../components/LocationPicker";
 
 const DummyData = [
   {
@@ -17,6 +18,7 @@ const AllPlaces = () => {
   return (
     <View>
       <PlacesList placeData={DummyData} />
+      <LocationPicker />
     </View>
   );
 };

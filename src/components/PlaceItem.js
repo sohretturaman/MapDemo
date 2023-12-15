@@ -5,7 +5,7 @@ import React from "react";
 import Colors from "../consts/Colors";
 
 const PlaceItem = ({ data }) => {
-  console.log("data value in place item", data);
+  //  console.log("data value in place item", data);
 
   return (
     <View style={styles.wrapper}>

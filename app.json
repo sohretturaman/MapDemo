@@ -32,7 +32,8 @@
         "expo-camera",
         {
           "cameraPermission": "Allow map demo app to use your camera to save your favourite places!",
-          "photosPermission": "The map demo app wants to accesses your photos !"
+          "photosPermission": "The map demo app wants to accesses your photos !",
+          "locationAlwaysAndWhenInUsePermission": "Allow app demo app access you location!!."
         }
       ]
     ]

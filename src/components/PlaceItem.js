@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 200,
-    backgroundColor: "red",
+    backgroundColor: Colors.grayDark,
     borderRadius: 10,
   },
   imageWrapper: { width: "100%", height: 200, borderRadius: 10 },

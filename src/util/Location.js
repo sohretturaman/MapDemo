@@ -6,6 +6,43 @@ export function StaticLocationFetcher(lat, lng) {
   return imagePreviewUrl;
 }
 
-export function getAdress(lat, lng) {
-  const geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?place_id=ChIJeRpOeF67j4AR9ydy_PIzPuM&key=${GOOGLE_API_KEY}`;
+export async function getAddressFromGeoCode(lat, lng) {
+  const geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`;
+
+  try {
+    const response = await fetch(geoCodeUrl);
+    const json = await response.json();
+    const address = json.results[0].formatted_address;
+
+    return address;
+  } catch (error) {
+    console.error(
+      "An error occurred while fetching address with geocode API",
+      error
+    );
+    return null;
+  }
+}
+
+{
+  /**
+the code is wrong and not working properly
+export async function getAddressFromGeoCode(lat, lng) {
+  const geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`;
+  await fetch(geoCodeUrl)
+    .then((response) => response.json()) //need to parse json
+    .then((json) => {
+      const address = json.results[0].formatted_address;
+      console.log("json.results", address);
+      return address;
+    })
+    .catch((error) => {
+      console.error(
+        "an error occured while fetching address with geocode api",
+        error
+      );
+    });
+}
+
+*/
 }

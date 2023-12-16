@@ -1,7 +1,7 @@
 /** @format */
 
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Alert, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useState } from "react";
 import Input from "../ui/Input";
 import { ScrollView } from "react-native";
 import LocationPicker from "./LocationPicker";
@@ -12,10 +12,38 @@ import ButtonComp from "../ui/ButtonComp";
 
 const PlaceForm = () => {
   const [enteredTitle, setEnteredTitle] = useState("");
+  const [savedImage, setSavedImage] = useState();
+  const [pickedLocation, setPickedLocation] = useState({ lat: 0, lan: 0 });
+  const [data, setData] = useState([]);
   function changeTitleHandler(enteredText) {
     setEnteredTitle(enteredText);
   }
 
+  function ImagePickerHandler(imgUrl) {
+    setSavedImage(imgUrl);
+  }
+
+  const LocationPickerHandler = useCallback((locationInfo) => {
+    //!!To avoid unncesesary rerendering use callback func in main  func
+    console.log("got data from locationpicker ?", locationInfo);
+
+    setPickedLocation(locationInfo);
+  }, []);
+
+  function onSubmitHandler() {
+    //  console.log("submit all all values",savedImage,pickedLocation,enteredTitle);
+    if (!enteredTitle || !savedImage || !pickedLocation) {
+      Alert.alert("Invalid input", "Please check your input values");
+    }
+    const placeData = {
+      title: enteredTitle,
+      image: savedImage,
+      location: pickedLocation,
+    };
+    setData(placeData);
+    setEnteredTitle("");
+    return placeData;
+  }
   return (
     <ScrollView>
       <View>
@@ -27,21 +55,16 @@ const PlaceForm = () => {
           value={enteredTitle}
         />
       </View>
-      <ImagePicker />
-      <LocationPicker />
+      <ImagePicker onImagePicker={ImagePickerHandler} />
+      <LocationPicker onLocationPicker={LocationPickerHandler} />
 
-      <ButtonComp
-        buttonTitle={"Submit location"}
-        onPress={() => {
-          console.log("subbmit pressed");
-        }}
-      />
+      <ButtonComp buttonTitle={"Submit location"} onPress={onSubmitHandler} />
     </ScrollView>
   );
 };
 
 export default PlaceForm;
-
+//got all provided informations  in this page
 const styles = StyleSheet.create({
   form: {
     flex: 1,

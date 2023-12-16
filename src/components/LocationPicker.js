@@ -10,14 +10,14 @@ import {
   PermissionStatus,
   getCurrentPositionAsync,
 } from "expo-location";
-import { StaticLocationFetcher } from "../util/Location";
+import { StaticLocationFetcher, getAddressFromGeoCode } from "../util/Location";
 import {
   useIsFocused,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
 
-export default function LocationPicker() {
+export default function LocationPicker({ onLocationPicker }) {
   const navigation = useNavigation();
   const route = useRoute();
   const isFocused = useIsFocused(); // check if the screen is focused or not
@@ -34,6 +34,17 @@ export default function LocationPicker() {
       setLocation(pickedLocation);
     }
   }, [route, isFocused]); // then will be able to see preview of picked locaiton on the map
+
+  useEffect(() => {
+    const getAddress = async () => {
+      if (location.lat !== 0 && location.lng !== 0) {
+        const address = await getAddressFromGeoCode(location.lat, location.lng);
+        onLocationPicker({ ...location, address: address }); //sentdata to place form to submit!,merged data in one object!! as a paramteher
+      }
+    };
+    getAddress();
+  }, [location, onLocationPicker]); //ensured with callback func , onLocationPicker func is not gonna be recreated unnecessarily
+
   async function getLocationPermission() {
     const permissionInfo = await requestForegroundPermissionsAsync();
     if (permissionInfo.status !== PermissionStatus.GRANTED) {
@@ -54,7 +65,6 @@ export default function LocationPicker() {
       );
     }
     const currentLocation = await getCurrentPositionAsync({});
-    console.log("current location ", currentLocation);
     setLocation({
       lng: currentLocation.coords.longitude,
       lat: currentLocation.coords.latitude,
@@ -117,7 +127,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 200,
-    backgroundColor: "red",
+    backgroundColor: Colors.grayDark,
     borderRadius: 10,
   },
   imageWrapper: { width: "100%", height: 200, borderRadius: 10 },

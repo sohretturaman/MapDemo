@@ -6,11 +6,6 @@ import PlaceForm from "../components/PlaceForm";
 import { useRoute } from "@react-navigation/native";
 
 const AddPlace = () => {
-  const route = useRoute();
-
-  const { pickedLocation } = route.params || {};
-  console.log("picked location in location picker", pickedLocation?.lat);
-
   return (
     <View>
       <PlaceForm />

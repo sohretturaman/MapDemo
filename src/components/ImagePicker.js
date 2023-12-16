@@ -11,7 +11,7 @@ import Colors from "../consts/Colors";
 import { useNavigation } from "@react-navigation/native";
 import ButtonComp from "../ui/ButtonComp";
 
-const ImagePicker = () => {
+const ImagePicker = ({ onImagePicker }) => {
   const [cameraInfo, requestPermissionInfo] = useCameraPermissions();
   const [imageurl, setImageurl] = useState(null);
 
@@ -41,9 +41,10 @@ const ImagePicker = () => {
       quality: 0.8,
     });
     if (!cameraResponse.canceled) {
-      console.log("image url is saved uri", cameraResponse.assets[0].uri);
+      //   console.log("image url is saved uri", cameraResponse.assets[0].uri);
 
       setImageurl(cameraResponse.assets[0].uri);
+      onImagePicker(cameraResponse.assets[0].uri); //sent data to place form to submit
     }
 
     if (cameraResponse.canceled) {

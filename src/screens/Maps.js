@@ -52,7 +52,6 @@ const Maps = () => {
   handleMapPress = (event) => {
     // Handle the pressed point data here
     const coords = event.nativeEvent.coordinate; // react out the coordiante with naviteEvent keyword
-    console.log("Pressed Point Coordinate:", coords);
     if (coords) {
       setPressedLocation({ lat: coords.latitude, lng: coords.longitude });
     }
@@ -71,7 +70,7 @@ const Maps = () => {
           }}
           title="Marker Title"
           description="Marker Description with glocation"
-          onPress={() => console.log("marke is pressed")}
+          onPress={() => console.log("mark is pressed")}
         />
       </MapView>
 

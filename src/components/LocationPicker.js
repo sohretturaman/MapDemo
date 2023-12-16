@@ -11,23 +11,29 @@ import {
   getCurrentPositionAsync,
 } from "expo-location";
 import { StaticLocationFetcher } from "../util/Location";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 
 export default function LocationPicker() {
   const navigation = useNavigation();
   const route = useRoute();
-  console.log("route.prams ?**", route.params?.pickedLat);
+  const isFocused = useIsFocused(); // check if the screen is focused or not
+  //console.log("route.prams ?**", route.params?.pickedLat);
 
   const [location, setLocation] = useState({ lng: 0, lat: 0 });
 
   useEffect(() => {
-    if (route.params?.pickedLat) {
-      setLocation({
-        lng: route.params?.pickedLng,
+    if (isFocused && route.params) {
+      const pickedLocation = {
         lat: route.params?.pickedLat,
-      });
+        lng: route.params?.pickedLng,
+      };
+      setLocation(pickedLocation);
     }
-  }, [location]);
+  }, [route, isFocused]); // then will be able to see preview of picked locaiton on the map
   async function getLocationPermission() {
     const permissionInfo = await requestForegroundPermissionsAsync();
     if (permissionInfo.status !== PermissionStatus.GRANTED) {

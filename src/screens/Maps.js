@@ -20,7 +20,8 @@ const Maps = () => {
   //save that pressed locaiton with headeright button and send data to addplace screen
 
   const pickedLocationHandler = useCallback(() => {
-    if (!pressedLocation) {
+    if (pressedLocation.lat == 0 || pressedLocation.lng == 0) {
+      console.log("pressed location value", pressedLocation);
       Alert.alert(
         "No place has been selected",
         "please select a location on the map"
@@ -32,16 +33,11 @@ const Maps = () => {
       pickedLat: pressedLocation.lat,
       pickedLng: pressedLocation.lng,
     });
-  }, [navigation, pressedLocation]);
+  }, [navigation, pressedLocation]); // we need to update those values
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        console.log(
-          "header right is clicked picked data",
-          pressedLocation?.lat
-        );
-
         return (
           <MaterialIcons
             name="save"
@@ -52,7 +48,7 @@ const Maps = () => {
         );
       },
     });
-  }, [navigation, pressedLocation]);
+  }, [navigation, pickedLocationHandler]); // !!put function itself to rerender in every changes
   handleMapPress = (event) => {
     // Handle the pressed point data here
     const coords = event.nativeEvent.coordinate; // react out the coordiante with naviteEvent keyword
@@ -62,7 +58,7 @@ const Maps = () => {
     }
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingBottom: 10 }}>
       <MapView
         region={initialRegion}
         style={{ flex: 1 }}

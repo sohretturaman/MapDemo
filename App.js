@@ -28,6 +28,7 @@ export default function App() {
           name="AllPlaces"
           component={AllPlaces}
           options={({ navigation }) => ({
+            title: "Your Favourite Places",
             headerRight: () => {
               return (
                 <MaterialIcons

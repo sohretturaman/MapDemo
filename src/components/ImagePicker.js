@@ -7,12 +7,11 @@ import {
   useCameraPermissions,
   PermissionStatus,
 } from "expo-image-picker";
-import { Camera } from "expo-camera";
-import PlaceForm from "./PlaceForm";
 import Colors from "../consts/Colors";
+import { useNavigation } from "@react-navigation/native";
+import ButtonComp from "../ui/ButtonComp";
 
-const Picker = () => {
-  const [title, setTitle] = useState("");
+const ImagePicker = () => {
   const [cameraInfo, requestPermissionInfo] = useCameraPermissions();
   const [imageurl, setImageurl] = useState(null);
 
@@ -29,11 +28,6 @@ const Picker = () => {
     return true;
   }
 
-  function handleTextInput(value) {
-    setTitle(value);
-    console.log("title", value);
-  }
-
   async function handleCameraPress() {
     const cameraPermissionState = await getPermission(); // returns true or false
     if (cameraPermissionState == false) {
@@ -43,7 +37,7 @@ const Picker = () => {
     }
     const cameraResponse = await launchCameraAsync({
       allowsEditing: true,
-      aspect: [16, 9],
+      aspect: [20, 10],
       quality: 0.8,
     });
     if (!cameraResponse.canceled) {
@@ -66,43 +60,62 @@ const Picker = () => {
         {imageurl ? (
           <Image source={{ uri: imageurl }} style={styles.image} />
         ) : (
-          <Text> no image taken yet !</Text>
+          <Text style={styles.text}> no image taken yet !</Text>
         )}
       </View>
     );
   };
+
   return (
     <View>
-      <PlaceForm
-        title={"write a place name"}
-        handleTextInput={handleTextInput}
-        value={title}
-        onSubmit={handleCameraPress}
-        buttonTitle={"add a new place"}
-      />
-      <ImgaePreview />
+      <View style={styles.wrapper}>
+        <Text style={{ alignSelf: "center", fontSize: 12 }}>
+          place :tokyo / japan
+        </Text>
+        <ImgaePreview />
+        <ButtonComp
+          buttonTitle={"add a photo"}
+          iconName={"camera-alt"}
+          onPress={handleCameraPress}
+        />
+      </View>
     </View>
   );
 };
 
-export default Picker;
+export default ImagePicker;
 
 const styles = StyleSheet.create({
   continer: {
     justifyContent: "center",
     flex: 1,
   },
+  text: {
+    color: Colors.primaryDark,
+    fontWeight: "bold",
+    alignSelf: "center",
+    paddingHorizontal: 5,
+  },
+  wrapper: {
+    backgroundColor: Colors.gray,
+    padding: 5,
+    borderRadius: 10,
+    width: "90%",
+    elevation: 2,
+    alignSelf: "center",
+    marginTop: 10,
+    alignItems: "center",
+  },
   imageWrapper: {
     alignItems: "center",
     width: "90%",
     height: 200,
-    margin: 10,
+    margin: 5,
     alignContent: "center",
-    backgroundColor: Colors.grayLight,
     justifyContent: "center",
   },
   image: {
-    width: 200,
+    width: "100%",
     height: 200,
     alignSelf: "center",
     borderRadius: 10,

@@ -10,17 +10,43 @@ import {
   PermissionStatus,
   getCurrentPositionAsync,
 } from "expo-location";
-import { LocationFetcher } from "../util/Location";
+import { StaticLocationFetcher } from "../util/Location";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function LocationPicker() {
+  const navigation = useNavigation();
+  const route = useRoute();
+  console.log("route.prams ?**", route.params?.pickedLat);
+
   const [location, setLocation] = useState({ lng: 0, lat: 0 });
 
-  async function handleOnCurrentLocation() {
+  useEffect(() => {
+    if (route.params?.pickedLat) {
+      setLocation({
+        lng: route.params?.pickedLng,
+        lat: route.params?.pickedLat,
+      });
+    }
+  }, [location]);
+  async function getLocationPermission() {
     const permissionInfo = await requestForegroundPermissionsAsync();
     if (permissionInfo.status !== PermissionStatus.GRANTED) {
       Alert.alert("permission denied", "please allow to access a location");
+      return false;
     }
-
+    if (permissionInfo.status === PermissionStatus.UNDETERMINED) {
+      return permissionInfo.granted;
+    }
+    return true;
+  }
+  async function handleOnCurrentLocation() {
+    const locationPerState = await getLocationPermission();
+    if (!locationPerState) {
+      console.log(
+        "persimssion is not granted for locaiton , user is denied ",
+        locationPerState
+      );
+    }
     const currentLocation = await getCurrentPositionAsync({});
     console.log("current location ", currentLocation);
     setLocation({
@@ -29,31 +55,36 @@ export default function LocationPicker() {
     });
   }
 
-  const locationPreviewUrl = LocationFetcher(location.lat, location.lng);
-  console.log("location preview url", locationPreviewUrl);
+  const locationPreviewUrl = StaticLocationFetcher(location.lat, location.lng); //used google maps static api to got that url
+  // console.log("location preview url", locationPreviewUrl); //put in state then use it
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.text}>Location</Text>
-      {/** conditional empty view*/}
-      <Image style={styles.image} source={{ uri: locationPreviewUrl }} />
-      {/** two button for current location and view all map */}
+      <View style={styles.wrapper}>
+        <Text style={styles.text}>Location</Text>
+        {locationPreviewUrl ? (
+          <Image style={styles.image} source={{ uri: locationPreviewUrl }} />
+        ) : (
+          <Text style={styles.text}>
+            current location did not pick yet, please clik the below button
+          </Text>
+        )}
 
-      <Text style={{ alignSelf: "center", fontSize: 12 }}>
-        Coords:{location.lat},{location.lng}
-      </Text>
+        <Text style={{ alignSelf: "center", fontSize: 12 }}>
+          Coords:{location.lat},{location.lng}
+        </Text>
+      </View>
+
       <View style={styles.buttonWrapper}>
         <ButtonComp
           buttonTitle={"Current Location "}
-          iconName={"location"}
+          iconName={"my-location"}
           onPress={handleOnCurrentLocation}
         />
         <ButtonComp
-          buttonTitle={"view all map "}
-          iconName={"location-sharp"}
-          onPress={() => {
-            console.log("view all map button is pressed");
-          }}
+          buttonTitle={"View all map "}
+          iconName={"zoom-out-map"}
+          onPress={() => navigation.navigate("Map")}
         />
       </View>
     </View>
@@ -62,7 +93,7 @@ export default function LocationPicker() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: Colors.textLight,
+    backgroundColor: Colors.gray,
     padding: 5,
     borderRadius: 10,
     width: "90%",

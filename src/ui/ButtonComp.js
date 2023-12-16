@@ -2,7 +2,7 @@
 
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../consts/Colors";
 
 const ButtonComp = ({ onPress, buttonTitle, iconName }) => {
@@ -10,7 +10,7 @@ const ButtonComp = ({ onPress, buttonTitle, iconName }) => {
     <Pressable onPress={onPress} style={styles.buttonWrapper}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.text}>{buttonTitle}</Text>
-        <Ionicons name={iconName} size={20} color={Colors.primaryDark} />
+        <MaterialIcons name={iconName} size={20} color={Colors.primaryDark} />
       </View>
     </Pressable>
   );
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
     alignItems: "center",
+    margin: 2,
   },
   text: {
     color: Colors.primaryDark,

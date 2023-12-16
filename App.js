@@ -8,7 +8,8 @@ import AddPlace from "./src/screens/AddPlace";
 import PlaceDetails from "./src/screens/PlaceDetails";
 import Colors from "./src/consts/Colors";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Maps from "./src/screens/Maps";
 
 const Stack = createStackNavigator();
 
@@ -18,28 +19,39 @@ export default function App() {
       <Stack.Navigator
         screenOptions={({ navigation }) => ({
           headerStyle: { backgroundColor: Colors.primary },
-          title: "Your Favourite Places",
+          // title: "Your Favourite Places",
           headerTitleAlign: "center",
-
-          headerRight: () => {
-            return (
-              <Ionicons
-                name="add"
-                onPress={() => navigation.navigate("AddPlace")}
-                size={30}
-              />
-            );
-          },
-          cardStyle: { backgroundColor: Colors.primaryDark },
+          cardStyle: { backgroundColor: Colors.primaryDark }, //app default backgroundColor
         })}
       >
-        <Stack.Screen name="AllPlaces" component={AllPlaces} />
+        <Stack.Screen
+          name="AllPlaces"
+          component={AllPlaces}
+          options={({ navigation }) => ({
+            headerRight: () => {
+              return (
+                <MaterialIcons
+                  name="add"
+                  style={{ marginRight: 10 }}
+                  onPress={() => navigation.navigate("AddPlace")}
+                  size={30}
+                />
+              );
+            },
+          })}
+        />
         <Stack.Screen name="AddPlace" component={AddPlace} />
         <Stack.Screen name="PlaceDetails" component={PlaceDetails} />
+        <Stack.Screen
+          name="Map"
+          component={Maps}
+          options={() => ({
+            title: "Map",
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-//make an example for camera , tomorrow location , today  finish camera and push it
-//dont work with web for now  it will be  done on next week
+//installed react native maps with expo to able to see  google maps screen

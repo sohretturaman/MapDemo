@@ -9,18 +9,19 @@ import ImagePicker from "./ImagePicker";
 import Colors from "../consts/Colors";
 import { TextInput } from "react-native";
 import ButtonComp from "../ui/ButtonComp";
+import { Places } from "../model/PlaceModel";
 
-const PlaceForm = () => {
+const PlaceForm = ({ onPlaceFormSubmit }) => {
   const [enteredTitle, setEnteredTitle] = useState("");
-  const [savedImage, setSavedImage] = useState();
+  const [savedImageUrl, setSavedImageUrl] = useState();
   const [pickedLocation, setPickedLocation] = useState({ lat: 0, lan: 0 });
-  const [data, setData] = useState([]);
+
   function changeTitleHandler(enteredText) {
     setEnteredTitle(enteredText);
   }
 
   function ImagePickerHandler(imgUrl) {
-    setSavedImage(imgUrl);
+    setSavedImageUrl(imgUrl);
   }
 
   const LocationPickerHandler = useCallback((locationInfo) => {
@@ -30,20 +31,17 @@ const PlaceForm = () => {
     setPickedLocation(locationInfo);
   }, []);
 
-  function onSubmitHandler() {
-    //  console.log("submit all all values",savedImage,pickedLocation,enteredTitle);
-    if (!enteredTitle || !savedImage || !pickedLocation) {
+  const onSubmitHandler = useCallback(() => {
+    if (!enteredTitle || !savedImageUrl || !pickedLocation) {
       Alert.alert("Invalid input", "Please check your input values");
     }
-    const placeData = {
-      title: enteredTitle,
-      image: savedImage,
-      location: pickedLocation,
-    };
-    setData(placeData);
-    setEnteredTitle("");
-    return placeData;
-  }
+    const placeData = new Places(enteredTitle, savedImageUrl, pickedLocation);
+    onPlaceFormSubmit(placeData); //sent to add place screen to send allplaces screen
+
+    setEnteredTitle(""); // Clear the entered title
+    setSavedImageUrl(null); // Clear the saved image URL
+    setPickedLocation({ lat: 0, lan: 0 }); // Reset the picked location
+  }, [enteredTitle, savedImageUrl, pickedLocation]);
   return (
     <ScrollView>
       <View>

@@ -21,13 +21,13 @@ const Maps = () => {
 
   const [pressedLocation, setPressedLocation] = useState({
     // show my picked location map if exist
-    lat: DetailsData ? DetailsData.lat : 0,
-    lng: DetailsData ? DetailsData.lng : 0,
+    lat: DetailsData ? DetailsData?.lat : 0,
+    lng: DetailsData ? DetailsData?.lng : 0,
   });
 
   const initialRegion = {
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: DetailsData ? DetailsData?.lat : 41.01384,
+    longitude: DetailsData ? DetailsData?.lng : 28.94966,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
@@ -53,7 +53,7 @@ const Maps = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        if (DetailsData.lat && DetailsData.lng) {
+        if (DetailsData?.lat && DetailsData?.lng) {
           return null; // Return null to hide the header right icon
         }
         return (
@@ -69,7 +69,7 @@ const Maps = () => {
   }, [navigation, pickedLocationHandler]); // !!put function itself to rerender in every changes
   handleMapPress = (event) => {
     //Handle the pressed point data here
-    if (DetailsData.lat || DetailsData.lng) {
+    if (DetailsData?.lat || DetailsData?.lng) {
       return null;
     }
     const coords = event.nativeEvent.coordinate; // react out the coordiante with naviteEvent keyword

@@ -9,7 +9,7 @@ const Colors = {
 
   // Secondary Colors
   secondary: "#2ecc71", // Green
-  secondaryDark: "#27ae60", // Dark Green
+  secondaryDark: "#FFFDD0", // Dark Green
 
   // Background Colors
   background: "#ecf0f1", // Light Gray

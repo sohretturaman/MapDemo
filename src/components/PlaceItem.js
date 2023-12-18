@@ -1,20 +1,27 @@
 /** @format */
 
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import Colors from "../consts/Colors";
+import { useNavigation } from "@react-navigation/native";
 
 const PlaceItem = ({ data }) => {
-  //  console.log("data value in place item", data);
+  const navigation = useNavigation();
+  function handleNavigateDetails() {
+    navigation.navigate("PlaceDetails", { data: data });
+  }
 
   return (
-    <View style={styles.wrapper}>
+    <Pressable
+      style={({ pressed }) => [styles.wrapper, pressed && styles.pressed]}
+      onPress={handleNavigateDetails}
+    >
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.imageWrapper}>
         <Image source={{ uri: data?.imgurl }} style={styles.image} />
       </View>
-      <Text style={styles.adress}> adress: {data?.adress}</Text>
-    </View>
+      <Text style={styles.adress}> adress: {data?.address}</Text>
+    </Pressable>
   );
 };
 
@@ -42,6 +49,9 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: Colors.grayDark,
     borderRadius: 10,
+  },
+  pressed: {
+    opacity: 0.7,
   },
   imageWrapper: { width: "100%", height: 200, borderRadius: 10 },
   title: {

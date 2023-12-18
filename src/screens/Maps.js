@@ -3,12 +3,16 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useLayoutEffect, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const Maps = () => {
   const navigation = useNavigation();
-  const [pressedLocation, setPressedLocation] = useState({ lat: 0, lng: 0 });
+
+  const [pressedLocation, setPressedLocation] = useState({
+    lat: 0,
+    lng: 0,
+  });
 
   const initialRegion = {
     latitude: 37.78825,

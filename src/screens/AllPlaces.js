@@ -4,37 +4,30 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PlacesList from "../components/PlacesList";
 import { useIsFocused, useRoute } from "@react-navigation/native";
+import initDatabase, { InsertPlace, fetchPlaces } from "../util/Database";
 
 const DummyData = [
   {
-    id: "2324",
     title: "japan",
     imgurl: "https://picsum.photos/200/150",
-    location: "",
+    location: { lat: "943", lng: "0987" },
     adress: "japan/tokyo",
   },
 ];
 const AllPlaces = () => {
-  const route = useRoute();
   const isFocused = useIsFocused();
   const [placesData, setPlacesData] = useState([]);
-  //kodu kontrol et !!
-  useEffect(() => {
-    // console.log("place data in all places", route.params?.placeData);
 
-    if (isFocused && route.params) {
-      if (isFocused && route.params) {
-        const newPlace = route.params.placeData;
-        if (!placesData.some((place) => place.id === newPlace.id)) {
-          setPlacesData((currentVals) => [...currentVals, newPlace]);
-        }
-      }
+  useEffect(() => {
+    async function loadPlaces() {
+      const places = await fetchPlaces();
+      setPlacesData(places);
     }
-    console.log(
-      "uzunluk",
-      placesData?.map((place) => place.title)
-    );
-  }, [route.params, isFocused]);
+
+    if (isFocused) {
+      loadPlaces();
+    }
+  }, [isFocused]);
   return (
     <View>
       <PlacesList placeData={placesData} />
@@ -43,5 +36,5 @@ const AllPlaces = () => {
 };
 
 export default AllPlaces;
-
+//change the output type of the data
 const styles = StyleSheet.create({});

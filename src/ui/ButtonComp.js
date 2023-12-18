@@ -5,9 +5,9 @@ import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../consts/Colors";
 
-const ButtonComp = ({ onPress, buttonTitle, iconName }) => {
+const ButtonComp = ({ onPress, buttonTitle, iconName, style }) => {
   return (
-    <Pressable onPress={onPress} style={styles.buttonWrapper}>
+    <Pressable onPress={onPress} style={[styles.buttonWrapper, style]}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.text}>{buttonTitle}</Text>
         <MaterialIcons name={iconName} size={20} color={Colors.primaryDark} />

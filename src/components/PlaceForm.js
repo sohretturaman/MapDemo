@@ -14,7 +14,11 @@ import { Places } from "../model/PlaceModel";
 const PlaceForm = ({ onPlaceFormSubmit }) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [savedImageUrl, setSavedImageUrl] = useState();
-  const [pickedLocation, setPickedLocation] = useState({ lat: 0, lan: 0 });
+  const [pickedLocation, setPickedLocation] = useState({
+    address: "",
+    lat: 0,
+    lan: 0,
+  });
 
   function changeTitleHandler(enteredText) {
     setEnteredTitle(enteredText);
@@ -26,8 +30,6 @@ const PlaceForm = ({ onPlaceFormSubmit }) => {
 
   const LocationPickerHandler = useCallback((locationInfo) => {
     //!!To avoid unncesesary rerendering use callback func in main  func
-    console.log("got data from locationpicker ?", locationInfo);
-
     setPickedLocation(locationInfo);
   }, []);
 
@@ -36,11 +38,8 @@ const PlaceForm = ({ onPlaceFormSubmit }) => {
       Alert.alert("Invalid input", "Please check your input values");
     }
     const placeData = new Places(enteredTitle, savedImageUrl, pickedLocation);
+    console.log("fetched data in placeform after a new place const", placeData);
     onPlaceFormSubmit(placeData); //sent to add place screen to send allplaces screen
-
-    setEnteredTitle(""); // Clear the entered title
-    setSavedImageUrl(null); // Clear the saved image URL
-    setPickedLocation({ lat: 0, lan: 0 }); // Reset the picked location
   }, [enteredTitle, savedImageUrl, pickedLocation]);
   return (
     <ScrollView>

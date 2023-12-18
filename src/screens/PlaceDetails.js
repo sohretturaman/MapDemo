@@ -9,7 +9,6 @@ import ButtonComp from "../ui/ButtonComp";
 const PlaceDetails = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  console.log("route .params in placedetails", route.params);
   const data = route.params?.data;
 
   useEffect(() => {
@@ -17,6 +16,7 @@ const PlaceDetails = () => {
       title: data.title,
     });
   }, []);
+
   return (
     <View style={styles.continer}>
       <View style={styles.imageWrapper}>
@@ -29,8 +29,7 @@ const PlaceDetails = () => {
         style={{ backgroundColor: Colors.secondaryDark, marginTop: 20 }}
         onPress={() => {
           navigation.navigate("Map", {
-            DetailLat: data.lat,
-            DetailLng: data.lng,
+            data: data,
           });
         }}
       />

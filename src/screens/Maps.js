@@ -1,17 +1,31 @@
 /** @format */
 
 import { Alert, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import MapView, { Marker } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const Maps = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const data = route.params.data;
+  console.log("data inn maps ", data.location);
+
+  const initialLocation = {
+    lat: data.location.lat,
+    lng: data.location.lng,
+  };
 
   const [pressedLocation, setPressedLocation] = useState({
-    lat: 0,
-    lng: 0,
+    // show my picked location map if exist
+    lat: initialLocation.lat ? initialLocation.lat : 0,
+    lng: initialLocation.lng ? initialLocation.lng : 0,
   });
 
   const initialRegion = {
@@ -42,6 +56,9 @@ const Maps = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
+        if (initialLocation.lat && initialLocation.lng) {
+          return null; // Return null to hide the header right icon
+        }
         return (
           <MaterialIcons
             name="save"
@@ -55,6 +72,9 @@ const Maps = () => {
   }, [navigation, pickedLocationHandler]); // !!put function itself to rerender in every changes
   handleMapPress = (event) => {
     // Handle the pressed point data here
+    if (initialLocation.lat || initialLocation.lng) {
+      return null;
+    }
     const coords = event.nativeEvent.coordinate; // react out the coordiante with naviteEvent keyword
     if (coords) {
       setPressedLocation({ lat: coords.latitude, lng: coords.longitude });
@@ -72,8 +92,8 @@ const Maps = () => {
             latitude: pressedLocation.lat,
             longitude: pressedLocation.lng,
           }}
-          title="Marker Title"
-          description="Marker Description with glocation"
+          title={data ? data.title : "new Location"}
+          description={data ? data.address : ""}
           onPress={() => console.log("mark is pressed")}
         />
       </MapView>

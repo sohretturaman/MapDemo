@@ -14,18 +14,15 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 const Maps = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const data = route.params.data;
-  console.log("data inn maps ", data.location);
+  const data = [];
+  const DetailsData = route.params?.data;
 
-  const initialLocation = {
-    lat: data.location.lat,
-    lng: data.location.lng,
-  };
+  console.log("maps data", DetailsData);
 
   const [pressedLocation, setPressedLocation] = useState({
     // show my picked location map if exist
-    lat: initialLocation.lat ? initialLocation.lat : 0,
-    lng: initialLocation.lng ? initialLocation.lng : 0,
+    lat: DetailsData ? DetailsData.lat : 0,
+    lng: DetailsData ? DetailsData.lng : 0,
   });
 
   const initialRegion = {
@@ -56,7 +53,7 @@ const Maps = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        if (initialLocation.lat && initialLocation.lng) {
+        if (DetailsData.lat && DetailsData.lng) {
           return null; // Return null to hide the header right icon
         }
         return (
@@ -71,8 +68,8 @@ const Maps = () => {
     });
   }, [navigation, pickedLocationHandler]); // !!put function itself to rerender in every changes
   handleMapPress = (event) => {
-    // Handle the pressed point data here
-    if (initialLocation.lat || initialLocation.lng) {
+    //Handle the pressed point data here
+    if (DetailsData.lat || DetailsData.lng) {
       return null;
     }
     const coords = event.nativeEvent.coordinate; // react out the coordiante with naviteEvent keyword
@@ -92,8 +89,8 @@ const Maps = () => {
             latitude: pressedLocation.lat,
             longitude: pressedLocation.lng,
           }}
-          title={data ? data.title : "new Location"}
-          description={data ? data.address : ""}
+          title={DetailsData ? DetailsData.title : "new Location"}
+          description={DetailsData ? DetailsData.address : ""}
           onPress={() => console.log("mark is pressed")}
         />
       </MapView>

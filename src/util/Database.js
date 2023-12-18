@@ -32,7 +32,6 @@ export function initializeDatabase() {
 }
 
 export function insertPlace(place) {
-  console.log("insert place database func is worked", place);
   const promise = new Promise((resolve, reject) => {
     database.transaction((tx) => {
       tx.executeSql(
@@ -80,7 +79,6 @@ export function fetchPlaces() {
               )
             );
           }
-          console.log("fethed places in database func", places);
 
           resolve(places);
         },
@@ -98,11 +96,11 @@ export function fetchPlaceDetails(id) {
   const promise = new Promise((resolve, reject) => {
     database.transaction((ts) => {
       ts.executeSql(
-        `SELECT FROM places WHERE id=?`,
+        `SELECT *FROM places WHERE id=?`,
         [id], //the data will be insterted for query
         (_, result) => {
-          console.log("result in fetchDetails successfully", result);
-          resolve(result); //does not return, just resolve
+          const resultData = result.rows._array[0];
+          resolve(resultData); //does not return, just resolve
         },
         (_, error) => {
           reject(error);

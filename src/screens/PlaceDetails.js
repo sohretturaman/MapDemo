@@ -1,35 +1,45 @@
 /** @format */
 
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Colors from "../consts/Colors";
 import ButtonComp from "../ui/ButtonComp";
+import { fetchPlaceDetails } from "../util/Database";
 
 const PlaceDetails = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const data = route.params?.data;
+  const [fetchedData, setFetchedData] = useState();
+  const placeId = route.params?.dataId;
 
   useEffect(() => {
-    navigation.setOptions({
-      title: data.title,
-    });
-  }, []);
+    const getDetails = async () => {
+      const data = await fetchPlaceDetails(placeId);
+      setFetchedData(data);
+    };
+    if (fetchedData) {
+      navigation.setOptions({
+        title: fetchedData.title,
+      });
+    }
+
+    getDetails();
+  }, [navigation, fetchedData]);
 
   return (
     <View style={styles.continer}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri: data?.imgurl }} style={styles.image} />
+        <Image source={{ uri: fetchedData?.imgurl }} style={styles.image} />
       </View>
-      <Text style={styles.adress}> Address : {data?.address}</Text>
+      <Text style={styles.adress}> Address : {fetchedData?.address}</Text>
       <ButtonComp
         buttonTitle={"View on Map"}
         iconName={"zoom-out-map"}
         style={{ backgroundColor: Colors.secondaryDark, marginTop: 20 }}
         onPress={() => {
           navigation.navigate("Map", {
-            data: data,
+            data: fetchedData,
           });
         }}
       />

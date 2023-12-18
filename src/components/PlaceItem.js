@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 const PlaceItem = ({ data }) => {
   const navigation = useNavigation();
   function handleNavigateDetails() {
-    navigation.navigate("PlaceDetails", { data: data });
+    navigation.navigate("PlaceDetails", { dataId: data.id });
   }
 
   return (

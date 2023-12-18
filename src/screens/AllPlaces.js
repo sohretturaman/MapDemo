@@ -6,14 +6,6 @@ import PlacesList from "../components/PlacesList";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import initDatabase, { InsertPlace, fetchPlaces } from "../util/Database";
 
-const DummyData = [
-  {
-    title: "japan",
-    imgurl: "https://picsum.photos/200/150",
-    location: { lat: "943", lng: "0987" },
-    adress: "japan/tokyo",
-  },
-];
 const AllPlaces = () => {
   const isFocused = useIsFocused();
   const [placesData, setPlacesData] = useState([]);

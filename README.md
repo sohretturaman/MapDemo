@@ -1,6 +1,7 @@
 ### React Native expo Favourite Places App
 can take a photo of your favourite place and pick that location on map!!
 Also can reach your current locaiton !
+(Picked location has been saved on SQLite database )
 
 
 # used Packages 
